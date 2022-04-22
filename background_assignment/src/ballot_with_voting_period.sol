@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 /// @title Voting with delegation.
-contract Ballot {
+contract BallotWithVotingPeriod {
     // This declares a new complex type which will
     // be used for variables later.
     // It will represent a single voter.
@@ -20,6 +20,17 @@ contract Ballot {
 
     address public chairperson;
 
+    // Definitions for limiting the voting period.
+    uint public startTime;
+    uint public votingDuration = 5 minutes;
+    modifier voteEnded {
+        require(
+            block.timestamp <= startTime + votingDuration,
+            "voting ended"
+        );
+        _;
+    }
+
     // This declares a state variable that
     // stores a `Voter` struct for each possible address.
     mapping(address => Voter) public voters;
@@ -31,6 +42,8 @@ contract Ballot {
     constructor(bytes32[] memory proposalNames) {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
+
+        startTime = block.timestamp;
 
         // For each of the provided proposal names,
         // create a new proposal object and add it
@@ -72,7 +85,7 @@ contract Ballot {
     }
 
     /// Delegate your vote to the voter `to`.
-    function delegate(address to) external {
+    function delegate(address to) external voteEnded {
         // assigns reference
         Voter storage sender = voters[msg.sender];
         require(!sender.voted, "You already voted.");
@@ -112,7 +125,7 @@ contract Ballot {
 
     /// Give your vote (including votes delegated to you)
     /// to proposal `proposals[proposal].name`.
-    function vote(uint proposal) external {
+    function vote(uint proposal) external voteEnded {
         Voter storage sender = voters[msg.sender];
         require(sender.weight != 0, "Has no right to vote");
         require(!sender.voted, "Already voted.");

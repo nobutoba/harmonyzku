@@ -21,12 +21,30 @@ contract BallotWithVotingPeriod {
     address public chairperson;
 
     // Definitions for limiting the voting period.
-    uint public startTime;
-    uint public votingDuration = 5 minutes;
-    modifier voteEnded {
+    uint public startTimeToAnnounce;
+    uint public endTimeToAnnounce;
+    uint public durationToAnnounce = 5 minutes;
+
+    uint public startTimeToVote;
+    uint public endTimeToVote;
+    uint public durationToVote = 5 minutes;
+
+    modifier duringAnnouncement {
         require(
-            block.timestamp <= startTime + votingDuration,
-            "voting ended"
+            block.timestamp <= endTimeToAnnounce,
+            "Announcement period ended."
+        );
+        _;
+    }
+
+    modifier duringVoting {
+        require(
+            block.timestamp >= startTimeToVote,
+            "Voting has not yet started."
+        );
+        require(
+            block.timestamp <= endTimeToVote,
+            "Voting period ended."
         );
         _;
     }
@@ -43,7 +61,10 @@ contract BallotWithVotingPeriod {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
 
-        startTime = block.timestamp;
+        startTimeToAnnounce = block.timestamp;
+        endTimeToAnnounce = startTimeToAnnounce + durationToAnnounce;
+        startTimeToVote = endTimeToAnnounce;
+        endTimeToVote = startTimeToVote + durationToVote;
 
         // For each of the provided proposal names,
         // create a new proposal object and add it
@@ -61,7 +82,7 @@ contract BallotWithVotingPeriod {
 
     // Give `voter` the right to vote on this ballot.
     // May only be called by `chairperson`.
-    function giveRightToVote(address voter) external {
+    function giveRightToVote(address voter) external duringAnnouncement {
         // If the first argument of `require` evaluates
         // to `false`, execution terminates and all
         // changes to the state and to Ether balances
@@ -85,7 +106,7 @@ contract BallotWithVotingPeriod {
     }
 
     /// Delegate your vote to the voter `to`.
-    function delegate(address to) external voteEnded {
+    function delegate(address to) external duringVoting {
         // assigns reference
         Voter storage sender = voters[msg.sender];
         require(!sender.voted, "You already voted.");
@@ -109,9 +130,12 @@ contract BallotWithVotingPeriod {
 
         // Since `sender` is a reference, this
         // modifies `voters[msg.sender].voted`
+        Voter storage delegate_ = voters[to];
+
+        // Voters cannot delegate to wallets that cannot vote.
+        require(delegate_.weight >= 1);
         sender.voted = true;
         sender.delegate = to;
-        Voter storage delegate_ = voters[to];
         if (delegate_.voted) {
             // If the delegate already voted,
             // directly add to the number of votes
@@ -125,7 +149,7 @@ contract BallotWithVotingPeriod {
 
     /// Give your vote (including votes delegated to you)
     /// to proposal `proposals[proposal].name`.
-    function vote(uint proposal) external voteEnded {
+    function vote(uint proposal) external duringVoting {
         Voter storage sender = voters[msg.sender];
         require(sender.weight != 0, "Has no right to vote");
         require(!sender.voted, "Already voted.");

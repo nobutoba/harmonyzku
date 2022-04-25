@@ -23,7 +23,7 @@ contract BallotWithVotingPeriod {
     // Definitions for limiting the voting period.
     uint public startTimeToAnnounce;
     uint public endTimeToAnnounce;
-    uint public durationToAnnounce = 5 minutes;
+    uint public durationToAnnounce = 3 minutes;
 
     uint public startTimeToVote;
     uint public endTimeToVote;

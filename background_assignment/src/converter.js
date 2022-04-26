@@ -1,14 +1,13 @@
 // Usage:
 // ```
-// const conversion = require("./bytes32conversion.js");
-// const text = "hello";
-// const bytes = conversion.stringToBytes32(text);
-// const textBackAndForth = conversion.bytes32ToString(bytes);
-// assert.equal(text, textBackAndForth);
+const Converter = require("./converter.js");
+const text = "hello";
+const bytes = Converter.stringToBytes32(text);
+const textBackAndForth = Converter.bytes32ToString(bytes);
+assert.equal(text, textBackAndForth);
 // ```
 const Buffer = require("buffer").Buffer;
-const encoding = "utf-8"
-
+const encoding = "utf8"
 
 function stringToBytes32(text) {
     // For example, if text is "hello",

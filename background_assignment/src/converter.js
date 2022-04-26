@@ -1,15 +1,15 @@
 // Usage:
 // ```
-const Converter = require("./converter.js");
-const text = "hello";
-const bytes = Converter.stringToBytes32(text);
-const textBackAndForth = Converter.bytes32ToString(bytes);
-assert.equal(text, textBackAndForth);
+// const Converter = require("./converter.js");
+// const text = "hello";
+// const bytes = Converter.stringToBytes32(text);
+// const textBackAndForth = Converter.bytes32ToString(bytes);
+// assert.equal(text, textBackAndForth);
 // ```
 const Buffer = require("buffer").Buffer;
-const encoding = "utf8"
+const defaultEncoding = "utf8"
 
-function stringToBytes32(text) {
+function stringToBytes32(text, encoding = defaultEncoding) {
     // For example, if text is "hello",
     // then buf is <Buffer 68 65 6c 6c 6f>.
     let bufShort = Buffer.from(text, encoding);
@@ -32,7 +32,7 @@ function stringToBytes32(text) {
     return hexRep;
 }
 
-function bytes32ToString(bytes) {
+function bytes32ToString(bytes, encoding = defaultEncoding) {
     // Strip the leading "0x" prefix if necessary.
     // For example, if bytes is "0x68656c6c6f00...0",
     // then bytes becomes "68656c6c6f00...0".

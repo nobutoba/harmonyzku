@@ -5,6 +5,9 @@
 // const bytes = Converter.stringToBytes32(text);
 // const textBackAndForth = Converter.bytes32ToString(bytes);
 // assert.equal(text, textBackAndForth);
+// const solTimestamp = 1650890064;
+// console.log(Converter.solTimestampToString(solTimestamp));
+// // Prints e.g. 'Mon Apr 25 2022 21:34:24 GMT+0900 (Japan Standard Time)'.
 // ```
 const Buffer = require("buffer").Buffer;
 const defaultEncoding = "utf8"
@@ -48,7 +51,19 @@ function bytes32ToString(bytes, encoding = defaultEncoding) {
     return stringSliced;
 }
 
+function solTimestampToString(solTimestamp) {
+    // Solidity and JavaScript (more precisely, the built-in Date class) use
+    // seconds and milliseconds since the UNIX epoch as units of time.
+    // For example, if solTimestamp is 1650890064, then jsTimestamp is 1650890064000.
+    let jsTimestamp = solTimestamp * 1000;
+    // Instantiates a Date object.
+    let datetime = new Date(jsTimestamp);
+    // datetime.toString() would return 
+    return datetime.toString();
+}
+
 module.exports = {
     stringToBytes32,
-    bytes32ToString
+    bytes32ToString,
+    solTimestampToString,
 }

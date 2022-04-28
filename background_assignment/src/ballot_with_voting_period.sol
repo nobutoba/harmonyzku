@@ -21,30 +21,30 @@ contract BallotWithVotingPeriod {
     address public chairperson;
 
     // Definitions for limiting the voting period.
-    uint private startTimeToAnnounce;
-    uint private endTimeToAnnounce;
-    uint private durationToAnnounce = 3 minutes;
+    uint private startTimeForPreVoting;
+    uint private endTimeForPreVoting;
+    uint private durationForPreVoting = 3 minutes;
 
-    uint public startTimeToVote;
-    uint public endTimeToVote;
-    uint private durationToVote = 5 minutes;
+    uint public startTimeForVoting;
+    uint public endTimeForVoting;
+    uint private durationForVoting = 5 minutes;
 
-    modifier duringAnnouncement {
+    modifier duringPreVoting {
         require(
-            block.timestamp <= endTimeToAnnounce,
-            "Announcement period ended."
+            block.timestamp <= endTimeForPreVoting,
+            "Pre-voting ended."
         );
         _;
     }
 
     modifier duringVoting {
         require(
-            block.timestamp >= startTimeToVote,
+            block.timestamp >= startTimeForVoting,
             "Voting has not yet started."
         );
         require(
-            block.timestamp <= endTimeToVote,
-            "Voting period ended."
+            block.timestamp <= endTimeForVoting,
+            "Voting ended."
         );
         _;
     }
@@ -61,10 +61,10 @@ contract BallotWithVotingPeriod {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
 
-        startTimeToAnnounce = block.timestamp;
-        endTimeToAnnounce = startTimeToAnnounce + durationToAnnounce;
-        startTimeToVote = endTimeToAnnounce;
-        endTimeToVote = startTimeToVote + durationToVote;
+        startTimeForPreVoting = block.timestamp;
+        endTimeForPreVoting = startTimeForPreVoting + durationForPreVoting;
+        startTimeForVoting = endTimeForPreVoting;
+        endTimeForVoting = startTimeForVoting + durationForVoting;
 
         // For each of the provided proposal names,
         // create a new proposal object and add it
@@ -82,7 +82,7 @@ contract BallotWithVotingPeriod {
 
     // Give `voter` the right to vote on this ballot.
     // May only be called by `chairperson`.
-    function giveRightToVote(address voter) external duringAnnouncement {
+    function giveRightToVote(address voter) external duringPreVoting {
         // If the first argument of `require` evaluates
         // to `false`, execution terminates and all
         // changes to the state and to Ether balances

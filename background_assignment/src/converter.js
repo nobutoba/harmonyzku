@@ -51,11 +51,11 @@ function bytes32ToString(bytes, encoding = defaultEncoding) {
     return stringSliced;
 }
 
-function solTimestampToString(solTimestamp) {
-    // Solidity and JavaScript (more precisely, the built-in Date class) use
+function evmTimestampToString(solTimestamp) {
+    // EVM and JavaScript (more precisely, the built-in Date class) use
     // seconds and milliseconds since the UNIX epoch as units of time.
-    // For example, if solTimestamp is 1650890064, then jsTimestamp is 1650890064000.
-    let jsTimestamp = solTimestamp * 1000;
+    // For example, if evmTimestamp is 1650890064, then jsTimestamp is 1650890064000.
+    let jsTimestamp = evmTimestamp * 1000;
     // Instantiates a Date object.
     let datetime = new Date(jsTimestamp);
     // datetime.toString() would return 
@@ -65,5 +65,5 @@ function solTimestampToString(solTimestamp) {
 module.exports = {
     stringToBytes32,
     bytes32ToString,
-    solTimestampToString,
+    evmTimestampToString,
 }

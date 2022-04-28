@@ -51,7 +51,7 @@ function bytes32ToString(bytes, encoding = defaultEncoding) {
     return stringSliced;
 }
 
-function evmTimestampToString(solTimestamp) {
+function evmTimestampToString(evmTimestamp) {
     // EVM and JavaScript (more precisely, the built-in Date class) use
     // seconds and milliseconds since the UNIX epoch as units of time.
     // For example, if evmTimestamp is 1650890064, then jsTimestamp is 1650890064000.

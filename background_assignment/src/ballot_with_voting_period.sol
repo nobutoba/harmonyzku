@@ -21,13 +21,13 @@ contract BallotWithVotingPeriod {
     address public chairperson;
 
     // Definitions for limiting the voting period.
-    uint public startTimeToAnnounce;
-    uint public endTimeToAnnounce;
-    uint public durationToAnnounce = 3 minutes;
+    uint private startTimeToAnnounce;
+    uint private endTimeToAnnounce;
+    uint private durationToAnnounce = 3 minutes;
 
     uint public startTimeToVote;
     uint public endTimeToVote;
-    uint public durationToVote = 5 minutes;
+    uint private durationToVote = 5 minutes;
 
     modifier duringAnnouncement {
         require(

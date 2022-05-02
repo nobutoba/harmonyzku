@@ -232,7 +232,7 @@ while not telling the actual coloring of the map.
 
 #### *Hello world source code*
 
-- GitHub URL: [hello_world.sol](https://github.com/nobutoba/harmonyzku/tree/background_assignment/background_assignment/src/hello_world.sol)
+- GitHub URL: [hello_world.sol](https://github.com/nobutoba/harmonyzku/blob/background_assignment/background_assignment/src/hello_world.sol)
 - Local path [./src/hello_world.sol](./src/hello_world.sol)
 
 #### *Hello world Screenshots*
@@ -411,7 +411,7 @@ On the other hand, an account without voting right MAY NOT vote
 
 #### (1) *Amended Ballot source code*
 
-- GitHub URL: [ballot_with_voting_period.sol](https://github.com/nobutoba/harmonyzku/tree/background_assignment/background_assignment/src/ballot_with_voting_period.sol)
+- GitHub URL: [ballot_with_voting_period.sol](https://github.com/nobutoba/harmonyzku/blob/background_assignment/background_assignment/src/ballot_with_voting_period.sol)
 - Local path: [./src/ballot_with_voting_period.sol](./src/ballot_with_voting_period.sol)
 
 #### (2) *Amended Ballot screenshots*

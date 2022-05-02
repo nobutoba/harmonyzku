@@ -1,6 +1,7 @@
 # Background Assignment
 
 - Author: Nobuhiko Otoba
+- Link to the GitHub repository: [https://github.com/nobutoba/harmonyzku](https://github.com/nobutoba/harmonyzku/tree/background_assignment)
 - Reference: [harmonyone](https://harmonyone.notion.site/Background-Assignment-a0d3855f9b9d4728a58b481c30ecfd3f)
 
 ## Assignment A. Conceptual Knowledge
@@ -27,13 +28,13 @@ a smart contract, once deployed on an Ethereum network,
 is like an instance of a class which we can interact with through its methods.
 A caveat of this analylogy is that
 a smart contract is public to the blockchain on which it is deployed.
-Anyone who has access to the blockchain can interact with the contract through.
+Anyone who has access to the blockchain can interact with the contract.
 
 Note that, as explained in the book,
 the term "smart contracts" is somewhat misleading in that **they are not necessarily legally-binded agreements**.
 According to a [Wikipedia article](https://en.wikipedia.org/wiki/Distributed_ledger_technology_law), "Smart contracts, which are also enforceable legal contracts and were created through interaction of lawyers and developers, are called smart legal contracts."
-**When we deploy a smart contract on an Ethereum network as described below,
-it does not have anything to do with law**.
+When we deploy a smart contract on an Ethereum network as described below,
+it does not have anything to do with law.
 
 #### *How are they deployed?*
 
@@ -59,7 +60,7 @@ In Ethereum, the deployment process of a smart contract typically goes as follow
 
     We then send a contract creation transaction to the Ethereum network
     and wait for the transaction to be added to the corresponding blockchain.
-    The contract creation transaction contains the compiled byte code produced in the previous step as a data payload.
+    The contract creation transaction contains the compiled byte code produced in the previous step as data payload.
 
 An example of the deployment process using the Remix IDE can be found in [Sect. B-1](#b-1-hello-world-contract).
 
@@ -91,15 +92,15 @@ After a smart contract is deployed on an Ethereum network,
 anyone (or even other smart contracts) may send transactions to it.
 For example, if one contract provides a functionality with the gas amount of 1,000,000
 and the other the same functionality with 2,000,000 gas,
-then the former one is strongly preferred for the following two reasons.
+then the former one is strongly preferred over the latter one for the following two reasons.
 
 1.
     Any account which calls the functionality will be able to halve the gas consumption and ETH in turn&mdash;thus **sparing money**.
 1.
     Any physical instantiation of the EVM is likely to execute less operations
     since every EVM opcode has the corresponding (static or dynamic) gas cost
-    which reflects the computational complexity of the corresponding operation.
-    It is more **eco-friendly** to use the 1,000,000-gas contract than the 2,000,000-gas one.
+    reflecting its computational complexity.
+    It is thus more **eco-friendly** to use the 1,000,000-gas contract than the 2,000,000-gas one.
 
 ### A-3. What is a hash?
 
@@ -107,36 +108,44 @@ then the former one is strongly preferred for the following two reasons.
 
 #### *What is a hash?*
 
-- **Hash**: A fixed-length fingerprint of variable-size input, produced by a hash function.
+A hash is a "fixed-length fingerprint of variable-size input, produced by a hash function" ([Mastering Ethereum](https://github.com/ethereumbook/ethereumbook/blob/first_edition_first_print/glossary.asciidoc)).
+For example, Python's standard library `hashlib`
+(which seems to invoke OpenSSL under the hood)
+uses the FIPS-202 SHA-3 hash function,
+
+```python
+>>> import hashlib
+>>> hashlib.sha3_256(b"").hexdigest()
+'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
+```
+
+whereas the JavaScript API `web3.js` uses the Keccak-256 hash function.
+
+```js
+> const Web3 = require("web3");
+> Web3.utils.sha3Raw("")
+'0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
+```
+
+In the examples above,
+the respective hashes of the empty sequence of bytes,
+produced by the FIPS-202 SHA-3 and the Keccak-256 hash functions,
+are the hexadecimals `'a7ffc6...'` and `'c5d246...'` (both 256 bits).
 
 #### *Why do people use hashing to hide information?*
 
-In what follows, I try to explain in four steps
-what is the Keccak256 hash function, the specific hash function
-used everywhere in the Ethereum ecosystem.
-
-1. What is a function?
-2. What is a hash function?
-3. What is a cryptographic hash function?
-4. What is Keccak256 hash function?
-
-   For example, Python's standard library `hashlib`
-   (which seems to invoke OpenSSL under the hood)
-   uses the FIPS-202 SHA-3 hash function,
-
-   ```python
-   >>> import hashlib
-   >>> hashlib.sha3_256(b"").hexdigest()
-   'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
-   ```
-
-   whereas the JavaScript API `web3.js` uses the Keccak-256 hash function.
-
-   ```js
-   > const Web3 = require("web3");
-   > Web3.utils.sha3Raw("")
-   '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
-   ```
+People often would like to hide information to other peple but, at the same time,
+have to show they actually know that information.
+In such a case, after converting the secret information to raw bytes if necessary,
+it makes sense for a prover to show its hash value to a verifier
+while hiding the raw bytes themselves.
+If the hash function has resistance to hash collisions,
+it is infeasible for the verifier to guess the secret from the hash value provided;
+it is also infeasible, when the prover actually does not know the secret,
+to pretend as if she knows it.
+This approach to use hashing to hide information, though,
+has a major drawback that it is theoretically possible for a malicious verifier
+to guess the information from the hash value through a brute force attack.
 
 ### A-4. Two different-colored objects
 
@@ -223,7 +232,7 @@ while not telling the actual coloring of the map.
 
 #### *Hello world source code*
 
-- GitHub URL: [hello_world.sol](https://github.com/nobutoba/harmonyzku/blob/background_assignment/background_assignment/src/hello_world.sol)
+- GitHub URL: [hello_world.sol](https://github.com/nobutoba/harmonyzku/tree/background_assignment/background_assignment/src/hello_world.sol)
 - Local path [./src/hello_world.sol](./src/hello_world.sol)
 
 #### *Hello world Screenshots*
@@ -266,7 +275,7 @@ As they say "We will not solve all problems here, but at least we will show how 
 this is a bare ballot contract **with an added functionality of delegating votes to others**.
 
 To understand each and every line of code,
-I then stripped the voting delegation functionality from the original source code and wrote `BallotWithoutDelegate` contract on [ballot_without_delegate.sol](./src/ballot_without_delegate.sol),
+I stripped the voting delegation functionality from the original source code and wrote `BallotWithoutDelegate` contract on [ballot_without_delegate.sol](./src/ballot_without_delegate.sol),
 **which implements a minimal voting functionality**.
 This makes things simpler and helps our understanding of the original Ballot contract.
 Some observations from the simplified contract are in order:
@@ -311,12 +320,15 @@ Some observations from the simplified contract are in order:
     4. `voted && weight == 1`:
         The mssage sender **had right to vote in the past and has already voted**.
 
+    The same applies to the original `Ballot` contract.
+
 1.
     The list of proposals are set by the chairperson at the time of deployment and will never change thereafter.
     The same applies to the original `Ballot` contract.
 
 1.
-    To save gas, only `bytes32`-encoded data (not string) can be used when the chairperson sets the proposals at the time of deployment or when anyone access the  winner name.
+    To save gas, only `bytes32`-encoded data (not string) can be used when the chairperson sets the proposals at the time of deployment or when anyone tries to access the  winner name.
+    The same applies to the original `Ballot` contract.
     To convert a string to `bytes32` and vice versa, I wrote convenience functions  `stringToBytes32` and `bytes32ToString` which are meaned to be inverse to each other in [converter.js](./src/converter.js).
     For example, in the Node.js REPL:
 
@@ -331,10 +343,10 @@ Some observations from the simplified contract are in order:
 
 1.
     After deploying `BallotWithoutDelegate`,
-**voting never ends and the "result" of the vote changes from time to time**. The chairperson may continue to grant rights to vote forever,
-and people with voting rights may postpone voting for an unlimited period of time.
-    The same applies to the original `Ballot` contract.
-It motivates to add voting time in the following exercises.
+   **voting never ends and the "result" of the vote changes from time to time**. The chairperson may continue to grant rights to vote forever,
+   and people with voting rights may postpone voting for an unlimited period of time.
+   The same applies to the original `Ballot` contract.
+   It motivates to add voting time in the following exercises.
 
 #### *The original `Ballot` contract*
 
@@ -344,12 +356,12 @@ and look at the voting delegation functionality.
 Notice that a `require` statement is missing in the `delegate` function,
 so that anonymous accounts who don't have voting rights may call it.
 **I created a pull request regarding this issue** [here](https://github.com/ethereum/solidity/pull/12956)
-(status on 2022-04-28: approved).
-Otherwise, the function is carefully written so as to:
+(status on 2022-05-02: approved).
+Otherwise, the function is carefully written so as to prevent:
 
-1. Prevent delegation from accounts who already voted or delegated.
-2. Prevent delegation to an account who has no right to vote.
-3. Prevent delegation-loop formation from happenning.
+1. Delegation from accounts who already voted or delegated.
+2. Delegation to an account who has no right to vote.
+3. Delegation-loop formation from happenning.
 
 ### B-3. Ballot contract with voting period
 
@@ -363,11 +375,11 @@ To fix the issue, I divide the time period into the following:
 
 1. Pre-voting period.
     Starts as soon as the contract is deployed on the blockchain and ends after 3 minutes. In this period:
-    - Chairperson can give rights to vote.
+    - Chairperson MAY give rights to vote.
     - People MAY NOT vote or delegate.
 2. Voting period.
    Starts as soon as the announcement period ends (thus 3 minutes after the deployment) and ends after 5 minutes (thus 8 minutes after the deployment).
-   - People can vote or delegate.
+   - People MAY vote or delegate.
    - Chaiperson MAY NOT give rights to vote.
 3. Post-voting period. Starts as soon as the voting period ends.
    - People MAY NOT vote or delegate.
@@ -399,7 +411,7 @@ On the other hand, an account without voting right MAY NOT vote
 
 #### (1) *Amended Ballot source code*
 
-- GitHub URL: [ballot_with_voting_period.sol](https://github.com/nobutoba/harmonyzku/blob/background_assignment/background_assignment/src/ballot_with_voting_period.sol)
+- GitHub URL: [ballot_with_voting_period.sol](https://github.com/nobutoba/harmonyzku/tree/background_assignment/background_assignment/src/ballot_with_voting_period.sol)
 - Local path: [./src/ballot_with_voting_period.sol](./src/ballot_with_voting_period.sol)
 
 #### (2) *Amended Ballot screenshots*

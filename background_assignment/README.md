@@ -356,7 +356,7 @@ and look at the voting delegation functionality.
 Notice that a `require` statement is missing in the `delegate` function,
 so that anonymous accounts who don't have voting rights may call it.
 **I created a pull request regarding this issue** [here](https://github.com/ethereum/solidity/pull/12956)
-(status on 2022-05-02: approved).
+(status on 2022-05-12: Accepted and merged in the `develop` branch).
 Otherwise, the function is carefully written so as to prevent:
 
 1. Delegation from accounts who already voted or delegated.

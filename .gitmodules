@@ -10,3 +10,6 @@
 [submodule "zku-cohort-3-week3"]
 	path = zku-cohort-3-week3
 	url = https://github.com/nobutoba/zku-cohort-3-week3.git
+[submodule "zku-cohort-3-week4"]
+	path = zku-cohort-3-week4
+	url = https://github.com/nobutoba/zku-cohort-3-week4.git
